@@ -690,6 +690,7 @@ menuOptions()
                 self addOpt( level.menuName, ::queueNotifyMessage, level.menuName );
                 self addOpt( level.players[0] getname() + " is your host today.", ::queueNotifyMessage, level.players[0] getname() + " is your host today." );
                 self addOpt( "Hope you're enjoying the lobby.", ::queueNotifyMessage, "Hope you're enjoying the lobby." );
+                self addOpt( "Discord MSG", ::queueNotifyMessage, "Discord.gg/MXT1" );
         }
         case "dvarOpts":
         {
