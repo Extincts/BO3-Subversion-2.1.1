@@ -52,24 +52,32 @@ doNoClipExt()
     self endon("noclip_end");
     self disableWeapons();
     self disableOffHandWeapons();
+    self.noclipExt = true;
+
     clip = spawn("script_origin", self.origin);
     self playerLinkTo(clip);
-    self.noclipExt = true;
     self EnableInvulnerability();
+
     while(true)
     {
-        vec = anglesToForward(self getPlayerAngles()); 
-        end = (vec[0]*60,vec[1]*60,vec[2]*60);
-        if(self attackButtonPressed()) clip.origin = clip.origin+end;
-        if(self adsButtonPressed()) clip.origin = clip.origin-end;
-        if(self meleeButtonPressed()) break;
+        vec = anglesToForward( self getPlayerAngles() ); 
+        end = (vec[0]*60, vec[1]*60, vec[2]*60);
+        if(self attackButtonPressed()) 
+            clip.origin = clip.origin + end;
+        if(self adsButtonPressed()) 
+            clip.origin = clip.origin - end;
+        if(self meleeButtonPressed()) 
+            break;
         wait .05;
     }
+
     clip delete();
     self enableWeapons();
     self enableOffHandWeapons();
-    if(!isDefined(self.godmode))
+
+    if(!isDefined( self.godmode ))
         self DisableInvulnerability();
+    
     self.noclipExt = undefined;
 }
 
