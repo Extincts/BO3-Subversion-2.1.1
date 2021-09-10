@@ -25,9 +25,6 @@ menuOptions()
         case "main":
         {
             self addMenu( "main", "Default Submenus" );
-                self addOpt("spawn_mechz", ::spawn_mechz);
-                
-
                 self addOpt( "Basic Options", ::newMenu, "basicOpts" );
                 self addOpt( "Fun Options", ::newMenu, "funOpts" );
                 self addOpt( "Advanced Options", ::newMenu, "advancedOpts" );
