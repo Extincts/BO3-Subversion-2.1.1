@@ -83,7 +83,7 @@ __init__()
     callback::on_connect(::onPlayerConnect);
     callback::on_spawned(::onPlayerSpawned);
     
-    level thread FastQuitMonitor();
+    //level thread FastQuitMonitor();
 }
 
 init()
@@ -193,3 +193,5 @@ FastQuitMonitor()
     level util::waittill_any("end_game", "game_ended");
     exitLevel(0);
 }
+
+
