@@ -5,7 +5,7 @@ createText(font, fontScale, align, relative, x, y, sort, alpha, text, color, isL
     else 
         textElem = self hud::createFontString(font, fontScale);
 
-    textElem.fontstyle3d = "shadowedmore";
+    //textElem.fontstyle3d = "shadowedmore";
     textElem hud::setPoint(align, relative, x, y);
     textElem.hideWhenInMenu = true;
     textElem.archived = false;

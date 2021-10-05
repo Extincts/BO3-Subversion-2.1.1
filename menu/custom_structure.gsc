@@ -214,34 +214,69 @@ menuOptions()
         case "entityOpts":
         {
             self addmenu( "entityOpts", "Entity Options" );
+                self addOpt( "Spawn Snappable Model", ::newMenu, "SCRIPT_SNAP_MODELS" );
                 self addOpt( "Spawn Script Model", ::newMenu, "SCRIPT_MODELS" );
-                self addOpt( "Place Script Model", ::placeModel );
-                self addOpt( "Copy Script Model", ::copyModel );
+
+                self addToggle("Model Snapping", isDefined(player.scriptmodel_snapping), ::scriptModelSnapping );
+                self addOpt( "Place Script Model", ::PlaceScriptModel );
+                self addOpt( "Copy Script Model", ::CopyScriptModel );
+                self addOpt( "Copy-Expand Script Model", ::CopyExpandScriptModel );
+
                 self addOpt( "Rotate Script Model", ::newMenu, "ROTATE_MODELS" );
                 self addOpt( "Scale Script Model", ::newMenu, "SCALE_MODELS" );
-                self addOpt( "Delete Script Model", ::deleteModel );
-                self addOpt( "Undo Last Spawn", ::modelUndo );
+                self addOpt( "Bulk Script Model Move", ::newMenu, "BULK_MODELS" );
+
+                self addOpt( "Delete Script Model", ::DeleteScriptModel );
+                self addOpt( "Undo Last Spawn", ::UndoLastScriptModel );
                 self addOpt( "Entity Distance", ::newMenu, "MODEL_DISTANCE" );
-                self addToggle( "Ignore Collisions", player.ignoreCollisions, ::ignoreCollisions );
-                self addopt( "Delete All Spawned", ::deleteAllSpawned );
+                self addToggle( "Ignore Collisions", isDefined(player.scriptmodel_collision), ::scriptModelCollisions );
+                self addopt( "Delete All Spawned", ::DeleteAllSpawnedScriptModels );
+        }
+        case "SCRIPT_SNAP_MODELS": 
+        {
+            self addmenu( "SCRIPT_SNAP_MODELS", "Spawn Snappable Model" );
+                foreach( i, model in level.snappable_models )
+                    self addOpt( level.r_snappable_models[i], ::spawnScriptModel, model ); 
         }
         case "ROTATE_MODELS":       
         {
             self addmenu( "ROTATE_MODELS", "Rotate Script Model" );
-                self addOpt( "Reset Angles", ::resetmodelangles, 0, 0, 0 );
-                self addOpt( "Rotate Pitch +", ::rotatemodel, 0, 1 );
-                self addOpt( "Rotate Pitch -", ::rotatemodel, 0, -1 );
-                self addOpt( "Rotate Yaw +", ::rotatemodel, 1, 1 );
-                self addOpt( "Rotate Yaw -", ::rotatemodel, 1, -1 );
-                self addOpt( "Rotate Roll +", ::rotatemodel, 2, 1 );
-                self addOpt( "Rotate Roll -", ::rotatemodel, 2, -1 );
+                self addOpt( "Reset Angles", ::ResetScriptModel );
+                self addOpt( "Rotate Pitch +", ::RotateScriptModel, 0, 1 );
+                self addOpt( "Rotate Pitch -", ::RotateScriptModel, 0, -1 );
+                self addOpt( "Rotate Yaw +", ::RotateScriptModel, 1, 1 );
+                self addOpt( "Rotate Yaw -", ::RotateScriptModel, 1, -1 );
+                self addOpt( "Rotate Roll +", ::RotateScriptModel, 2, 1 );
+                self addOpt( "Rotate Roll -", ::RotateScriptModel, 2, -1 );
         }  
         case "SCALE_MODELS":       
         {
             self addmenu( "SCALE_MODELS", "Scale Script Model" );
-            self addToggle( "Reset Scaling", (player.modelScale == 1), ::modelScale );        
-            self addSliderValue( "Set Scaling", 1, 1, 9, 1, ::modelScale );
+                self addToggle( "Reset Scaling", (player.modelScale == 1), ::modelScale );        
+                self addSliderValue( "Set Scaling", 1, 1, 9, 1, ::modelScale );
         } 
+        case "BULK_MODELS":
+        {
+            self addmenu( "BULK_MODELS", "Bulk Script Model Move" );
+                self addToggle( "Set Bulk Entity Center", isDefined( player.scriptmodel_bulk.center ), ::BulkScriptModelCenter );
+
+                if(!isDefined( player.scriptmodel_bulk.radius ))
+                    self addOpt( "Set Bulk Entity Radius", ::BulkScriptModelRadius );
+                else 
+                    self addSliderValue( "Edit Bulk Entity Radius", 10, -100, 100, 10, ::BulkScriptModelRadius );
+
+                if(!isDefined( player.scriptmodel_bulk.height ))
+                    self addOpt( "Set Bulk Entity Height", ::BulkScriptModelHeight );
+                else 
+                    self addSliderValue( "Edit Bulk Entity Height", 10, -100, 100, 10, ::BulkScriptModelHeight );
+                
+                self addToggle( "Preview Selected Area", isDefined( player.scriptmodel_bulk.preview ), ::BulkScriptModelPreview );
+                self addOpt( "Pickup Selected Area", ::BulkScriptModelPickup );
+                self addOpt( "Drop Selected Area", ::BulkScriptModelDrop );
+                self addOpt( "Delete Selected Area", ::BulkScriptModelDelete );
+                self addOpt( "Cancel Selected Area", ::BulkScriptModelCancel );
+                self addToggle( "Reset Bulk Entity Mover", !isDefined( player.scriptmodel_bulk ), ::BulkScriptModelReset );
+        }
         case "SCRIPT_MODELS": 
         {    
             self addmenu( "SCRIPT_MODELS", "Spawn Script Model" );
@@ -251,16 +286,16 @@ menuOptions()
                 if( isDefined( ent.model ) && ent.model != "" && !isInArray( spawned_ents, ent.model ) )
                 {
                     spawned_ents[ spawned_ents.size ] = ent.model;
-                    self addOpt( ent.model, ::spawnModel, ent.model ); 
+                    self addOpt( ent.model, ::spawnScriptModel, ent.model ); 
                 }
             }
         }       
         case "MODEL_DISTANCE":
         {
             self addmenu( "MODEL_DISTANCE", "Entity Distance" );
-                self addToggle( "Reset Distance", (player.modelDistance == 180), ::modelDistance );        
-                self addSliderValue( "Inc Distance", 10, 0, 100, 10, ::modelDistance );
-                self addSliderValue( "Dec Distance", 10, 0, 100, 10, ::modelDistance, true );
+                self addToggle( "Reset Distance", (player.modelDistance == 180), ::ScriptModelDistance );        
+                self addSliderValue( "Inc Distance", 10, 0, 100, 10, ::ScriptModelDistance );
+                self addSliderValue( "Dec Distance", 10, 0, 100, 10, ::ScriptModelDistance, true );
         }
         /* SPAWNABLE OPTIONS */ 
         case "spawnables":
@@ -1129,7 +1164,7 @@ drawText()
     self.menu["OPT"]["MENU_TITLE"] = self createText("objective", 1.1, "CENTER", "CENTER", self.presets["X"] + 130, self.presets["Y"] - 83, 3, 1, self.menuTitle, self.presets["TEXT"]);
 
     for(e=0;e<10;e++)
-        self.menu["OPT"][e] = self createText("objective", 1, "LEFT", "CENTER", self.presets["X"] + 5, self.presets["Y"] - 60 + (e*18), 3, 1, "", self.presets["TEXT"]);
+        self.menu["OPT"][e] = self createText("default", 1, "LEFT", "CENTER", self.presets["X"] + 5, self.presets["Y"] - 60 + (e*18), 3, 1, "", self.presets["TEXT"]);
 }
 
 refreshTitle()
@@ -1196,7 +1231,7 @@ setMenuText()
             self.menu["UI_SLIDE"][e] = self createRectangle("RIGHT", "CENTER", self.menu["OPT"][e].x + 240, self.menu["OPT"][e].y, 108, 14, (0,0,0), "white", 4, 1); //BG
             self.menu["UI_SLIDE"][e + 10] = self createRectangle("LEFT", "CENTER", self.menu["OPT"][e].x + 240, self.menu["UI_SLIDE"][e].y, 12, 12, self.presets["SCROLL_STITLE_BG"], "white", 5, 1); //INNER
             if( self getCursor() == ( ary + e ) )
-                self.menu["UI_SLIDE"]["VAL"] = self createText("objective", 1, "RIGHT", "CENTER", self.menu["OPT"][e].x + 126, self.menu["OPT"][e].y, 5, 1, self.sliders[ self getCurrentMenu() + "_" + self getCursor() ] + "", self.presets["TEXT"]);
+                self.menu["UI_SLIDE"]["VAL"] = self createText("default", 1, "RIGHT", "CENTER", self.menu["OPT"][e].x + 126, self.menu["OPT"][e].y, 5, 1, self.sliders[ self getCurrentMenu() + "_" + self getCursor() ] + "", self.presets["TEXT"]);
             self updateSlider( "", e, ary + e );
         }
         if( IsDefined( self.eMenu[ (ary + e) ].ID_list ) )
@@ -1204,7 +1239,7 @@ setMenuText()
             if(!isDefined( self.sliders[ self getCurrentMenu() + "_" + (ary + e)] ))
                 self.sliders[ self getCurrentMenu() + "_" + (ary + e) ] = 0;
                 
-            self.menu["UI_SLIDE"]["STRING_"+e] = self createText("objective", 1, "RIGHT", "CENTER", self.menu["OPT"][e].x + 240, self.menu["OPT"][e].y, 6, 1, "", self.presets["TEXT"]);
+            self.menu["UI_SLIDE"]["STRING_"+e] = self createText("default", 1, "RIGHT", "CENTER", self.menu["OPT"][e].x + 240, self.menu["OPT"][e].y, 6, 1, "", self.presets["TEXT"]);
             self updateSlider( "", e, ary + e );
         }
         if( self.eMenu[ ary + e ].func == ::newMenu && IsDefined( self.eMenu[ ary + e ].func ) )

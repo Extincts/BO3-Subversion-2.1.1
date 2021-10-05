@@ -539,3 +539,37 @@ stringToFloat( stringVal )
     }
     return floatVal;    
 }
+
+ArrayContainsKey(Array, Key, ReturnIndex)
+{
+	for (i = 0; i < Array.size; i++)
+		if (Array[i] == Key)
+            return (IsDefined(ReturnIndex) && ReturnIndex) ? i : true;
+    return (IsDefined(ReturnIndex) && ReturnIndex) ? -1 : false;
+}
+
+GetIndexByKey(Array, Key)
+{
+	for (i = 0; i < Array.size; i++)
+		if (Array[i] == Key)
+			return i;
+
+	return -1;
+}
+
+DeleteAll(DeleteChildren)
+{
+	if (!isDefined(DeleteChildren))
+		DeleteChildren = true;
+
+	Keys = GetArrayKeys(self);
+	for (i = 0; i < Keys.size; i++)
+	{
+		Object = self[Keys[i]];
+
+		if (DeleteChildren && isArray(Object))
+			Object DeleteAll(DeleteChildren);
+		else
+			Object Delete();
+	}
+}
