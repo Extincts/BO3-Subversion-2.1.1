@@ -242,3 +242,14 @@ isMenuOpen()
         return true;
     return false;
 }
+
+dynamicOptionFix( refresh = true )
+{
+    if( refresh )
+    	self refreshMenuToggles();
+	if( self getCursor() > self.eMenu.size - 1 )
+	{
+		self setCursor( self.eMenu.size - 1 );
+		self updateScrollbar();
+	}
+}

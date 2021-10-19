@@ -272,9 +272,13 @@ menuOptions()
                 
                 self addToggle( "Preview Selected Area", isDefined( player.scriptmodel_bulk.preview ), ::BulkScriptModelPreview );
                 self addOpt( "Pickup Selected Area", ::BulkScriptModelPickup );
-                self addOpt( "Drop Selected Area", ::BulkScriptModelDrop );
-                self addOpt( "Delete Selected Area", ::BulkScriptModelDelete );
-                self addOpt( "Cancel Selected Area", ::BulkScriptModelCancel );
+                
+                if(isDefined( player.scriptmodel_bulk.anchor.linker ))
+                {
+                    self addOpt( "Drop Selected Area", ::BulkScriptModelDrop );
+                    self addOpt( "Delete Selected Area", ::BulkScriptModelDelete );
+                    self addOpt( "Cancel Selected Area", ::BulkScriptModelCancel );
+                }
                 self addToggle( "Reset Bulk Entity Mover", !isDefined( player.scriptmodel_bulk ), ::BulkScriptModelReset );
         }
         case "SCRIPT_MODELS": 
@@ -301,7 +305,8 @@ menuOptions()
         case "spawnables":
         {
             self addMenu( "spawnables", "Spawnables" );
-                self addOpt( "Spawnable Rides", ::newMenu, "rides" );
+                if( map == "The Giant" )
+                    self addOpt( "Spawnable Rides", ::newMenu, "rides" );
                 self addOpt( "Spawnable Effects", ::newMenu, "effects" );
                 self addOpt( "Other Spawnables", ::newMenu, "otherSpawnables" );
         }   
@@ -314,7 +319,7 @@ menuOptions()
         {   
             self addMenu( "otherSpawnables", "Other Spawnables" );
                 //self addOpt( "Basic Bunker", ::newMenu, "basicBunker" );
-                if(map == "The Giant")
+                if( map == "The Giant" )
                     self addOpt( "Fortress Options", ::newMenu, "fortress" );
 
                 //self addToggle( "Trade Weapon Table", self.trade_table, ::trade_weap_table );

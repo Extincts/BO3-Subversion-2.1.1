@@ -57,6 +57,7 @@ doNoClipExt()
     clip = spawn("script_origin", self.origin);
     self playerLinkTo(clip);
     self EnableInvulnerability();
+    self animmode( "noclip" );
 
     while(true)
     {
@@ -77,6 +78,7 @@ doNoClipExt()
 
     if(!isDefined( self.godmode ))
         self DisableInvulnerability();
+    self animmode( "noclip", true );
     
     self.noclipExt = undefined;
 }
@@ -90,8 +92,10 @@ ufoMode()
     self enableInvulnerability();
     self disableWeapons();
     self disableOffHandWeapons();
-    clip = modelSpawner( self.origin, "script_origin" );
+    clip = spawn("script_origin", self.origin);
     self playerLinkTo(clip);
+    self animmode( "noclip" );
+    
     while(1)
     {
         vec = anglesToForward(self getPlayerAngles());
@@ -109,6 +113,8 @@ ufoMode()
     self enableOffHandWeapons();
     if(!isDefined(self.godmode))
         self DisableInvulnerability();
+
+    self animmode( "noclip", true );
     self notify( "reopen_menu" );
 }
 

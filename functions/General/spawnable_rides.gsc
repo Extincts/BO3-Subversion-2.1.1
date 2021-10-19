@@ -19,7 +19,8 @@ monitorSeats( ride, array )
         
         trig arySetUnUsable( array, player );
         trig setHintString( "Press ^3[{+melee}]^7 to exit the " + ride + "." );
-        
+        player animmode( "noclip" );
+
         if( ride == "Ferris Wheel" )
         {
             seat = modelSpawner( trig.origin - anglesToRight(self.angles) * 22, "script_origin", (0,90,0) );
@@ -49,6 +50,7 @@ monitorSeats( ride, array )
         player unlink();    
         player setOrigin( save_origin );
         player editMovements( 1 );
+        player animmode( "noclip", true );
         
         if( ride == "Ferris Wheel" )
             seat delete();
@@ -122,8 +124,9 @@ build_claw()
     for(a=0;a<2;a++) for(e=0;e<8;e++)
     level.claw[level.claw.size] = modelSpawner(pos + (0,15,90) + (cos(e*45)* (50 + a*50), sin(e*45)* (50 + a*50), -70), "p7_zm_der_magic_box", (0, (e*45) + (a*90), 0), .1);
     
-    for(e=0;e<8;e++) level.seats[level.seats.size] = modelSpawner(pos + (0,15,90) + (cos(e*45)*86,sin(e*45)*86, -60), "tag_origin", Undefined,.1);
-    
+    for(e=0;e<8;e++)
+        level.seats[level.seats.size] = spawn("script_origin", pos + (0,15,90) + (cos(e*45)*86,sin(e*45)*86, -60));
+
     link = modelSpawner(pos + (0,15,310), "tag_origin");
     foreach(model in level.claw)
         model linkTo( link );

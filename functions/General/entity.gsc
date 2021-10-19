@@ -320,7 +320,7 @@ BulkScriptModelCenter()
 	self.scriptmodel_bulk.center.origin = self.origin;
 	self.scriptmodel_bulk.center.fx = modelSpawner( self.origin, "tag_origin" );
 	self.scriptmodel_bulk.center.fx SetVisibleToPlayer( self );
-	self.scriptmodel_bulk.center.fx clientfield::set("powerup_fx", 2 );
+	self.scriptmodel_bulk.center.fx clientfield::set( "powerup_fx", 2 );
 
 	if(isDefined( self.scriptmodel_bulk.preview ))
 		self thread BulkScriptModelPreview();
@@ -341,7 +341,7 @@ BulkScriptModelHeight( edit_value )
 	self.scriptmodel_bulk.height.origin = position;
 	self.scriptmodel_bulk.height.fx = modelSpawner( position, "tag_origin" );
 	self.scriptmodel_bulk.height.fx SetVisibleToPlayer(self);
-	self.scriptmodel_bulk.height.fx clientfield::set("powerup_fx", 2 );
+	self.scriptmodel_bulk.height.fx clientfield::set( "powerup_fx", 2 );
 
 	if(isDefined( self.scriptmodel_bulk.preview ))
 		self thread BulkScriptModelPreview();
@@ -363,7 +363,7 @@ BulkScriptModelRadius( edit_value )
 	self.scriptmodel_bulk.radius.origin = position;
 	self.scriptmodel_bulk.radius.fx = modelSpawner( position, "tag_origin" );
 	self.scriptmodel_bulk.radius.fx SetVisibleToPlayer( self );
-	self.scriptmodel_bulk.radius.fx clientfield::set("powerup_fx", 2 );
+	self.scriptmodel_bulk.radius.fx clientfield::set( "powerup_fx", 2 );
 
 	if(isDefined( self.scriptmodel_bulk.preview ))
 		self thread BulkScriptModelPreview();
@@ -421,6 +421,7 @@ BulkScriptModelPickup()
 		ent linkTo( self.scriptmodel_bulk.anchor.linker, "tag_origin" );
 	}
 
+	self refreshMenuToggles();
 	while(isDefined( self.scriptmodel_bulk.anchor.linker ))
 	{
 		position = ( isDefined( self.scriptmodel_collision ) ? self lookPos( self.scriptmodel_distance ) : self getEye() + anglesToForward( self getPlayerAngles() ) * self.scriptmodel_distance );
@@ -480,16 +481,17 @@ BulkScriptModelDeleteFX()
 		self.scriptmodel_bulk.anchor.linker delete();
 		self.scriptmodel_bulk.anchor = undefined;
 	}
+	self dynamicOptionFix();
 }
 
 BulkScriptModelReset()
 {
 	self BulkScriptModelDeleteFX();
-	self.scriptmodel_bulk = undefined;
 	self.scriptmodel_bulk.center = undefined;
 	self.scriptmodel_bulk.radius = undefined;
 	self.scriptmodel_bulk.height = undefined;
 	self.scriptmodel_bulk.preview = undefined;
+	self.scriptmodel_bulk = undefined;
 }
 
 modelScale(val, decrease)
