@@ -334,9 +334,9 @@ BulkScriptModelHeight( edit_value )
 		self.scriptmodel_bulk.height.fx delete();
 
     position = (self.scriptmodel_bulk.center.origin[0], self.scriptmodel_bulk.center.origin[1], self.origin[2]);
-    if(isDefined( edit_value ))
+    if(isDefined( self.scriptmodel_bulk.height ) && isDefined( edit_value ))
         position = self.scriptmodel_bulk.height.origin + (0, 0, edit_value);
-	
+		
 	self.scriptmodel_bulk.height = SpawnStruct();
 	self.scriptmodel_bulk.height.origin = position;
 	self.scriptmodel_bulk.height.fx = modelSpawner( position, "tag_origin" );
@@ -356,7 +356,7 @@ BulkScriptModelRadius( edit_value )
 		self.scriptmodel_bulk.radius.fx delete();
 
     position = (self.origin[0], self.origin[1], self.scriptmodel_bulk.center.origin[2]);
-    if(isDefined( edit_value ))
+    if(isDefined( self.scriptmodel_bulk.radius ) && isDefined( edit_value ))
         position = self.scriptmodel_bulk.radius.origin + (edit_value, edit_value, self.scriptmodel_bulk.radius.origin[2]);
 
 	self.scriptmodel_bulk.radius = spawnStruct();
