@@ -167,6 +167,8 @@ menuOptions()
                 self addToggle( "Spectate Grenades", player.spec_nade, ::spec_nade );
                 
                 self addToggle( "Auto Revive Gun", player.auto_revive_gun, ::auto_revive_gun );
+                self addToggle( "Cod4 Bounces", player.doCod4Bounce, ::cod4Bounce );
+                self addOpt("2D Solo Pong", ::pong_huds);
         }
         case "customRagdoll":
         {

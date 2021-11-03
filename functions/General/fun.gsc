@@ -1144,3 +1144,189 @@ auto_revive_gun_monitor()
             victim zm_laststand::auto_revive( victim );
     }
 }
+
+cod4Bounce()
+{
+    if(!isDefined(self.doCod4Bounce))
+    {
+        self.doCod4Bounce = true;
+        self thread doCod4Bounce();
+    }
+    else self.doCod4Bounce = undefined;
+}
+
+doCod4Bounce()
+{
+    self endon("disconnect");
+    level endon("game_ended");
+    
+    while(isDefined(self.doCod4Bounce))
+    {
+        while(!self jumpButtonPressed())
+            wait .05;
+
+        while(!self isOnGround())
+        {
+            vel = self GetVelocity()[2];
+            wait .05;
+        }
+        
+        bounceTrace = [];
+        bounceTrace[0] = bulletTrace(self.origin, self.origin + (anglesToRight( self getPlayerAngles() ) * 20) + (anglesToUp( self getPlayerAngles() ) *-9999), false, self); //RIGHT DOWN
+        bounceTrace[1] = bulletTrace(self.origin, self.origin + (anglesToRight( self getPlayerAngles() ) * -20) + (anglesToUp( self getPlayerAngles() ) * -9999), false, self); //LEFT DOWN
+        bounceTrace[2] = bulletTrace(self.origin, self.origin + (anglesToForward( self getPlayerAngles() ) * 20) + (anglesToUp( self getPlayerAngles() ) * -9999), false, self); //FORWARD DOWN
+        bounceTrace[3] = bulletTrace(self.origin, self.origin + (anglesToForward( self getPlayerAngles() ) * -20) + (anglesToUp( self getPlayerAngles() ) * -9999), false, self); //BAKCWARD DOWN
+        
+        for(e=0;e<bounceTrace.size;e++)
+        {
+            if(distance(bounceTrace[e]["position"], self.origin) > 30 && vel < -250)
+            {
+                self setOrigin((self.origin));
+                for(z=int((vel / 90) * -1);z>0;z--)
+                {
+                    self setVelocity(self getVelocity() + (0, 0, 350));
+                    wait .05;
+                }
+                break 1;
+            }
+        }
+        wait .05;
+    }
+}
+
+//Solo Pong - 25/11/2019 ~ Extinct [DOGSHIT ON BO3 / MUCH BETTER ON MW2]
+pong_huds()
+{
+    self thread refreshMenu();
+    wait .28;
+    
+    pong = [];
+    pong[0] = self createRectangle("CENTER", "CENTER", 0, 0, 320, 200, (0,0,0), "white", 0, .8); //MAIN BG
+    pong[1] = self createRectangle("CENTER", "CENTER", 0, 0, 14, 14, (1,1,1), "zombie_stopwatch_glass", 2, 1); //BALL
+    
+    pong[2] = self createRectangle("CENTER", "CENTER", 150, 0, 5, 50, (1,1,1), "white", 1, 1); //PADDLE 
+    pong[3] = self createRectangle("CENTER", "CENTER", 0, 0, 3, 200, (1,1,1), "white", 1, .4); //CENTER LINE 
+    
+    pong[4] = self createRectangle("CENTER", "CENTER", 0, -101, 320, 3, (1,1,1), "white", 1, .4); //TOP LINE 
+    pong[5] = self createRectangle("CENTER", "CENTER", 0, 101, 320, 3, (1,1,1), "white", 1, .4); //BORROM LINE 
+    
+    pong[6] = self createText("small", 1.3, "CENTER", "CENTER", 0, -110, 5, 1, "SCORE: 0", (1,1,1)); //SCORES
+    pong[7] = self createText("small", 1.3, "CENTER", "CENTER", 0, 108, 5, 1, "PRESS [{+melee}] TO EXIT!", (1,1,1)); //SCORES
+    
+    self thread pong_monitor_ball( pong );
+    self thread pong_player_monitor( pong );
+    self thread pong_exit( pong );
+    self FreezeControls( true );
+}
+
+pong_monitor_ball( huds )
+{
+    score = 0;
+    best  = 0;
+    x     = 8;
+    y     = 0;
+    
+    while( IsDefined( huds[1] ) )
+    {
+        huds[1] thread hudMoveXY( .1, huds[1].x + x, huds[1].y + y );
+        
+        if(huds[1].x >= huds[2].x - 13 && huds[1].x <= huds[2].x && huds[1].y >= huds[2].y - 30 && huds[1].y <= huds[2].y + 30 )
+        {
+            score++;    
+            x *= -1;
+            y = RandomIntRange( -6, 6 );
+            huds[6] setText( "SCORE: " + score );
+            self PlaySoundToPlayer( "ui_mp_timer_countdown", self );
+        }
+        else if(huds[1].x > 160 ) //ENDING POINT (FAILED TO SAVE BALL)
+        {
+            if( score > best )    
+                best = score;    
+                
+            huds[6] setText( "GAME OVER - BEST SCORE " + best + " - PRESS [{+usebutton}] TO TRY AGAIN!" );  
+            huds[1] thread hudMoveXY( 0, 0, 0 ); 
+            while(!self UseButtonPressed())
+                wait .05; 
+             
+            score = 0;    
+            huds[6] setText( "SCORE: " + score );    
+        }    
+        
+        if(huds[1].x < -148)
+            x *= -1;
+        if(huds[1].y < -90 || huds[1].y > 90 ) 
+            y *= -1;
+        self.predict = (huds[1].y + (y * 4));    
+        wait .05;
+    }
+}
+
+pong_player_monitor( huds )
+{
+    while( IsDefined( huds[2] ) )
+    {
+        //self ai_control_paddle( huds, 2 );
+        //wait .05;
+        
+        //ACTUAL PLAYERS
+        if( self AttackButtonPressed() )
+        {
+            if( huds[2].y < 75 )
+                huds[2] thread hudMoveXY( .1, huds[2].x, huds[2].y + 25 );
+            wait .1;  
+        }
+        else if( self AdsButtonPressed() )
+        {
+            if( huds[2].y > -75 )
+                huds[2] thread hudMoveXY( .1, huds[2].x, huds[2].y - 25 );
+            wait .1;    
+        }
+        wait .05;
+    }
+}
+
+ai_control_paddle( huds, index )
+{
+    ball = self.predict;
+    if( ball <= 0 )
+        ball *= -1; 
+    
+    amount = 0;
+    for(e=0;e<4;e++)
+    {
+        if( 25 * amount < ball )
+            amount = e;
+    }    
+            
+    if( huds[1].x > 60 && huds[index].y == 0 )
+    {  
+        for(e=0;e<amount;e++)
+        {
+            if( huds[index].y < 75 && self.predict > 25)
+                huds[index] thread hudMoveXY( .1, huds[index].x, huds[index].y + 25 );
+             if( huds[index].y > -75 && self.predict < -25)
+                huds[index] thread hudMoveXY( .1, huds[index].x, huds[index].y - 25 );    
+            wait .1; 
+        }
+    }
+    if( huds[1].x < 60 && huds[index].y != 0 )
+    {
+        huds[index] thread hudMoveXY( .1 * amount, huds[index].x, 0 );
+        wait .1 * amount;
+    }
+}
+
+pong_exit( huds )
+{
+    while( IsDefined( huds[2] ) )
+    {
+        if(self MeleeButtonPressed())
+        {
+            destroyAll( huds );
+            break;
+        }
+        wait .05;
+    }
+    self FreezeControls( false );
+    self notify( "reopen_menu" );
+}

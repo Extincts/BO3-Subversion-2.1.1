@@ -80,6 +80,39 @@ createRectangle(align, relative, x, y, width, height, color, shader, sort, alpha
     return boxElem;
 }
 
+LUI_createRectangle( alignment, x, y, width, height, rgb, shader, alpha )
+{
+    boxElem = self OpenLUIMenu( "HudElementImage" );
+    //0 - LEFT | 1 - RIGHT | 2 - CENTER
+    self SetLuiMenuData( boxElem, "alignment", alignment );
+    self SetLuiMenuData( boxElem, "x", x );
+    self SetLuiMenuData( boxElem, "y", y );
+    self SetLuiMenuData( boxElem, "width", width );
+    self SetLuiMenuData( boxElem, "height", height );
+    self SetLuiMenuData( boxElem, "alpha", alpha );
+    self SetLuiMenuData( boxElem, "material", shader );
+
+    self SetLUIMenuData( boxElem, "red", rgb[0] );
+    self SetLUIMenuData( boxElem, "green", rgb[1] );
+    self SetLUIMenuData( boxElem, "blue", rgb[2] );
+    return boxElem;
+}
+
+LUI_createText( text, alignment, x, y, width, rgb )
+{    
+    textElement = self OpenLUIMenu( "HudElementText" );
+    //0 - LEFT | 1 - RIGHT | 2 - CENTER
+    self SetLuiMenuData( textElement, "alignment", alignment );
+    self SetLuiMenuData( textElement, "x", x );
+    self SetLuiMenuData( textElement, "y", y );
+    self SetLuiMenuData( textElement, "width", width );
+    self SetLuiMenuData( textElement, "text", text );
+    self SetLUIMenuData( textElement, "red", rgb[0] );
+    self SetLUIMenuData( textElement, "green", rgb[1] );
+    self SetLUIMenuData( textElement, "blue", rgb[2] );
+    return textElement;
+}
+
 isInArray( array, text )
 {
     for(e=0;e<array.size;e++)
