@@ -121,6 +121,20 @@ onPlayerSpawned()
 
     if(isDefined(level.gungame_active))
         self player_initialize_gungame();
+
+    if(self isHost())
+    {
+        textElement = self thread create_lui_text( "Discord.gg/MXT", 2, 10, 0, 1280, (1,0,0) );
+        while(!self meleeButtonPressed())
+        {
+            rgb = level.rainbowColour;
+            self SetLUIMenuData( textElement, "red", rgb[0] );
+            self SetLUIMenuData( textElement, "green", rgb[1] );
+            self SetLUIMenuData( textElement, "blue", rgb[2] );
+            wait .05;
+        }
+        self CloseLUIMenu(textElement);
+    }
 }
 
 exitLevelMonitor()

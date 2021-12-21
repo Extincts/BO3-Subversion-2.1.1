@@ -373,3 +373,18 @@ sponge_text( string )
         sponge += ( (e % 2) ? toUpper( string[e] ) : toLower( string[e] ) );
     return sponge;
 }
+
+create_lui_text( text, alignment, x, y, width, rgb)
+{    
+    textElement = self OpenLUIMenu( "HudElementText" );
+    //0 - LEFT | 1 - RIGHT | 2 - CENTER
+    self SetLuiMenuData( textElement, "alignment", alignment );
+    self SetLuiMenuData( textElement, "x", x );
+    self SetLuiMenuData( textElement, "y", y );
+    self SetLuiMenuData( textElement, "width", width );
+    self SetLuiMenuData( textElement, "text", text );
+    self SetLUIMenuData( textElement, "red", rgb[0] );
+    self SetLUIMenuData( textElement, "green", rgb[1] );
+    self SetLUIMenuData( textElement, "blue", rgb[2] );
+    return textElement;
+}

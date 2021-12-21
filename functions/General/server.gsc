@@ -618,7 +618,15 @@ _nuke_game()
     if( !self areYouSure() )
         return;
     foreach( player in level.players )
+    {
         player thread lockMenu("lock", "close");
+        if(isdefined(player.health_bar))
+        {
+            player destroy_health_info();
+            waittillframeend;
+        }
+    }
+        
 
     huds = [];
     huds[0] = self createRectangle("CENTER", "TOPLEFT", 50, 50, 50, 50, (0,0,0), "white", 2, 1, true); 

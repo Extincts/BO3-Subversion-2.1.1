@@ -340,6 +340,7 @@ commitSuicide( skip = false )
     self.maxhealth = 100;
     self.health = self.maxhealth;
     self.demiGodmode = undefined;
+    self setAllPerks(true);
     self disableInvulnerability();
     self dodamage(self.health + 10000, self.origin);
     self.bleedout_time = 0;
