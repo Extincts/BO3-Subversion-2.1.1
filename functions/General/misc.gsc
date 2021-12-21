@@ -185,6 +185,19 @@ getMapName()
     return GetDvarString("mapname");
 }
 
+getMagicBoxModel()
+{
+    id = Array("zm_zod", "zm_stalingrad", "zm_genesis", "zm_factory", "zm_tomb", "zm_prototype", "zm_asylum", "zm_moon", "zm_sumpf", "zm_cosmodrome", "zm_temple");
+    rl = Array("zod", "der", "der", "der", "Origins", "shi", "shi", "shi", "shi", "shi", "shi");
+    
+    for(e=0;e<id.size;e++)
+    {
+        if(id[e] == GetDvarString("mapname"))
+            return "p7_zm_" + rl[e] + "_magic_box";
+    }
+    return "";
+}
+
 moon_doors_supported()
 {
     array = ["zm_sumpf", "zm_asylum", "zm_factory", "zm_theater", "zm_cosmodrome"];

@@ -70,20 +70,24 @@ spawnScriptModel( model )
 			Index = GetIndexByKey( level.snappable_models, self.scriptmodel_current.model );
 
 			Dimensions = StrTok( level.snappable_dimensions[Index], ";" );
+			Dimensions[0] = StringToFloat(Dimensions[0]) * self.scriptmodel_scale;
+			Dimensions[1] = StringToFloat(Dimensions[1]) * self.scriptmodel_scale;
+			Dimensions[2] = StringToFloat(Dimensions[2]) * self.scriptmodel_scale;
+			Dimensions[3] = (GetXModelCenterOffset( level.snappable_models[Index] )[2] * 1.9) * self.scriptmodel_scale; // auto calculates the height
 
 			SnapPoints = [];
 			for(i = 0; i < 2; i++)
-				SnapPoints[i] = AnglesToForward(ClosestModel.angles) * (StringToFloat(Dimensions[0]) * ((i % 2) ? -1 : 1));
+				SnapPoints[i] = AnglesToForward(ClosestModel.angles) * (Dimensions[0] * ((i % 2) ? -1 : 1));
 			for(i = 2; i < 4; i++)
-				SnapPoints[i] = AnglesToRight(ClosestModel.angles) * (StringToFloat(Dimensions[1]) * ((i % 2) ? -1 : 1));
+				SnapPoints[i] = AnglesToRight(ClosestModel.angles) * (Dimensions[1] * ((i % 2) ? -1 : 1));
 
-			SnapPoints[4] = AnglesToForward(ClosestModel.angles) * (StringToFloat(Dimensions[2]) * -1) + AnglesToRight(ClosestModel.angles) * StringToFloat(Dimensions[2]);
-			SnapPoints[5] = AnglesToForward(ClosestModel.angles) * (StringToFloat(Dimensions[2]) * -1) + AnglesToRight(ClosestModel.angles) * (StringToFloat(Dimensions[2]) * -1);
-			SnapPoints[6] = AnglesToForward(ClosestModel.angles) * StringToFloat(Dimensions[2]) + AnglesToRight(ClosestModel.angles) * StringToFloat(Dimensions[2]);
-			SnapPoints[7] = AnglesToForward(ClosestModel.angles) * StringToFloat(Dimensions[2]) + AnglesToRight(ClosestModel.angles) * (StringToFloat(Dimensions[2]) * -1);
+			SnapPoints[4] = AnglesToForward(ClosestModel.angles) * (Dimensions[2] * -1) + AnglesToRight(ClosestModel.angles) * Dimensions[2];
+			SnapPoints[5] = AnglesToForward(ClosestModel.angles) * (Dimensions[2] * -1) + AnglesToRight(ClosestModel.angles) * (Dimensions[2] * -1);
+			SnapPoints[6] = AnglesToForward(ClosestModel.angles) * Dimensions[2] + AnglesToRight(ClosestModel.angles) * Dimensions[2];
+			SnapPoints[7] = AnglesToForward(ClosestModel.angles) * Dimensions[2] + AnglesToRight(ClosestModel.angles) * (Dimensions[2] * -1);
 
 			for(i = 8; i < 10; i++)
-				SnapPoints[i] = AnglesToUp(ClosestModel.angles) * (StringToFloat(Dimensions[3]) * ((i % 2) ? -1 : 1));
+				SnapPoints[i] = AnglesToUp(ClosestModel.angles) * (Dimensions[3] * ((i % 2) ? -1 : 1));
 
 			SnapAngles = [];
 			for(i = 0; i < 4; i++)
@@ -105,14 +109,14 @@ spawnScriptModel( model )
 
 			ClosestSnapPoint = ArrayGetClosest(position, SnapFx);
 
-			if(Distance(ClosestSnapPoint.origin, position) <= 32)
+			if(Distance(ClosestSnapPoint.origin, position) <= ((32 * self.scriptmodel_scale) + (10 * self.scriptmodel_scale)))
 			{
 				self.scriptmodel_current.origin = ClosestSnapPoint.origin;
 				self.scriptmodel_current.angles = ClosestSnapPoint.SnapAngle;
 				self.scriptmodel_current.Snapped = true;
 			}
 
-			if(Distance(ClosestSnapPoint.origin, position) > 32 && isDefined(self.scriptmodel_current.Snapped))
+			if(Distance(ClosestSnapPoint.origin, position) > ((32 * self.scriptmodel_scale) + (10 * self.scriptmodel_scale)) && isDefined(self.scriptmodel_current.Snapped))
 			{
 				self.scriptmodel_current.origin = position;
 				self.scriptmodel_current.Snapped = undefined;
@@ -140,7 +144,7 @@ CopyScriptModel()
 		return;
 
 	current = self.scriptmodel_current;
-	copy = modelSpawner( current.origin, current.model, current.angles );
+	copy = modelSpawner( current.origin, current.model, current.angles, undefined, self.scriptmodel_scale );
 	self.scriptmodel_array[self.scriptmodel_array.size] = copy;
 }
 

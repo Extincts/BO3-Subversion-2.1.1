@@ -238,7 +238,12 @@ menuOptions()
         {
             self addmenu( "SCRIPT_SNAP_MODELS", "Spawn Snappable Model" );
                 foreach( i, model in level.snappable_models )
-                    self addOpt( level.r_snappable_models[i], ::spawnScriptModel, model ); 
+                {
+                    if( map == "The Giant" && level.m_snappable_models[i] == "The Giant" ) 
+                        self addOpt( level.r_snappable_models[i], ::spawnScriptModel, model ); 
+                    else if( level.m_snappable_models[i] == "All" )
+                        self addOpt( level.r_snappable_models[i], ::spawnScriptModel, model ); 
+                }
         }
         case "ROTATE_MODELS":       
         {
