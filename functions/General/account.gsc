@@ -72,10 +72,8 @@ do_all_challenges()
             break;
 
             default:
-                foreach( weapon in strTok(stat.split, " ") )
-                {               
+                foreach( weapon in strTok(stat.split, " ") )         
                     self addWeaponStat( GetWeapon( weapon ), stat.name, stat.value ); 
-                }
             break;
         }
         wait .1;
