@@ -750,7 +750,7 @@ menuOptions()
             self addMenu( "gibZombies", "Zombie Gib Options" );
             bodyparts = ["right_arm", "left_arm", "right_leg", "left_leg"];
             foreach( part in bodyparts )
-            self addOpt( "Gib " + constructString( replaceChar(part, "_", " ") ), ::_zombie_wrapper_function, ::gibZombie, part );
+                self addOpt( "Gib " + constructString( replaceChar(part, "_", " ") ), ::_zombie_wrapper_function, ::gibZombie, part );
             
             self addOpt( "Gib Head", ::_zombie_head_gib );
             self addOpt( "Gib Both Legs", ::_makeZombieCrawler );

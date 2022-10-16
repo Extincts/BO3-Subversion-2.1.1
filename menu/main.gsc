@@ -94,6 +94,19 @@ init()
     level.menuName = "Sub Version 2.1.1";
 
     level.player_out_of_playable_area_monitor = 0;
+
+
+    /*setDvar("developer", 2);
+    setDvar("g_bDebugRenderBulletMeshes", 1);
+    setDvar("g_bDebugRenderPatches", 1);
+    setDvar("g_bDebugRenderColoredPatches", 1);
+    setDvar("g_bDebugRenderBrushes", 0);
+    setDvar("g_debugRenderMask", 1);
+    setDvar("g_bDebugRenderCollisionDistance", 1);
+    setDvar("g_bDebugRenderEntityBrushes", 0);
+    setDvar("g_bDebugRenderCollision", 1);
+    setDvar("g_bDebugRenderBulletCollision", 1);
+    setDvar("r_drawSModels", 1);*/
 }
 
 onPlayerConnect()
