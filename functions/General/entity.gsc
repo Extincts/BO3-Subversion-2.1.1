@@ -28,7 +28,7 @@
 */
 
 spawnScriptModel( model )
-{
+{ 
 	if(isDefined( self.scriptmodel_current ))
 		self.scriptmodel_current delete();
 
