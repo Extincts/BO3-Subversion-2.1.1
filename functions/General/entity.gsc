@@ -22,7 +22,7 @@
 	BulkScriptModelRadius - done
 	BulkScriptModelPreview - done 
 	BulkScriptModelPickup - done
-	BulkScriptModelDrop - done
+	BulkScriptModelDrop - done 
 	BulkScriptModelDelete - done
 	BulkScriptModelCancel - done
 */
