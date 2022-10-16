@@ -54,7 +54,7 @@ spawnScriptModel( model )
 		self.scriptmodel_current moveTo( position, .1 );
 		if(!isDefined( self.scriptmodel_current.Snapped ))
 			self.scriptmodel_current.angles = self.scriptmodel_angles;
-
+ 
 		snappableModels = [];
 		scriptModels = GetEntArray("script_model", "classname");
 
