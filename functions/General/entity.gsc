@@ -513,4 +513,4 @@ modelScale(val, decrease)
     if(isDefined( self.scriptmodel_current ))
         self.scriptmodel_current SetScale( self.scriptmodel_scale );
     self refreshMenuToggles();
-}
+} 
