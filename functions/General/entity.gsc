@@ -1,32 +1,3 @@
-/*
-	CREDITS:
-		Extinct [Writing All Of the Code]
-		Mikeeeyy [Original Idea's & Example Code]
-
-	FILE CONTAINS: 
-	SpawnScriptModel  - done
-	PlaceScriptModel	- done
-	CopyScriptModel 	- done
-	RotateScriptModel   - done
-	ResetSctiptModel 	- done
-	DeleteScriptModel	- done
-	DeleteAllSpawnedScriptModels - done
-	UndoLastScriptModel	- done
-	ScriptModelDistance - done
-	ScriptModelSnapping - done
-	IgnoreCollisions	- done
-	CopyExpandScriptModel - done
-
-	BulkScriptModelCenter - done
-	BulkScriptModelHeight - done
-	BulkScriptModelRadius - done
-	BulkScriptModelPreview - done 
-	BulkScriptModelPickup - done
-	BulkScriptModelDrop - done 
-	BulkScriptModelDelete - done
-	BulkScriptModelCancel - done
-*/
-
 spawnScriptModel( model )
 {
 	if(isDefined( self.scriptmodel_current ))
